@@ -1,0 +1,21 @@
+version: '3.4'
+
+services:
+  snapycloud:
+    image: snapycloud:latest
+    depends_on:
+      - mysql
+    volumes:
+      - ./snapycloud-data:/var/www/snapycloud/data
+    ports:
+      - "10081:80"
+
+  mysql:
+    image: percona:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:?MYSQL_ROOT_PASSWORD is not set or empty}
+      - MYSQL_DATABASE=snapycloud
+      - MYSQL_USER=app
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD:?MYSQL_PASSWORD is not set or empty}
+    volumes:
+      - ./mysql-data:/var/lib/mysql:rw,delegated
